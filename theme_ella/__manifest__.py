@@ -38,7 +38,7 @@ Right to left theme
     ],
     'live_test_url': 'http://theme-ella.atharvasystem.com/',
     'images': ['static/description/ella_banner.png','static/description/ella_banner_screenshot.png'],
-    'price': 78.00,
+    'price': 135.00,
     'currency': 'EUR',
     'application': True,
 }
