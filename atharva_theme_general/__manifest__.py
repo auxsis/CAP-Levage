@@ -4,7 +4,7 @@
     'category': 'Website',
     'sequence': 5,
     'summary': """Atharva Theme General""",
-    'version': '2.3',
+    'version': '2.2',
     'author': 'Atharva System',
     'support': 'support@atharvasystem.com',
     'website' : 'http://www.atharvasystem.com',
