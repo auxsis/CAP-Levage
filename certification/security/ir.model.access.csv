@@ -1,0 +1,36 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+audit_manager,Audits réalisés,model_critt_certification_audit,certification.certification_manager,1,1,1,1
+equipment_manager,Équipement,model_critt_equipment,certification.certification_manager,1,1,1,1
+ligne_saisie_user_manager,Ligne saisie utilisateur,model_critt_certification_ligne_saisie_utilisateur,certification.certification_manager,1,1,1,1
+question_manager,Question,model_critt_certification_question,certification.certification_manager,1,1,1,1
+questionnaire_manager,Questionnaire,model_critt_certification_questionnaire,certification.certification_manager,1,1,1,1
+regroupement_manager,Regroupement,model_critt_certification_regroupement,certification.certification_manager,1,1,1,1
+saisie_utilisateur_manager,Saisie utilisateur questionnaire,model_critt_certification_saisie_utilisateur,certification.certification_manager,1,1,1,1
+certificat_manager,Stockage de certificats,model_critt_certification_certificat,certification.certification_manager,1,1,1,1
+planification_manager,Planification,model_critt_certification_planification,certification.certification_manager,1,1,1,1
+rapport_controle_manager,Rapport de contrôle,model_critt_certification_rapport_controle,certification.certification_manager,1,1,1,1
+print_mass_certif_manager,Impression masse certif,model_critt_certification_print_mass_certificate,certification.certification_manager,1,1,1,1
+equipment_category_manager,Equipement Category,model_critt_equipment_category,certification.certification_manager,1,1,1,1
+equipment_create_right_manager,Création Équipement Client,model_critt_equipment_create_right,certification.certification_manager,1,1,1,1
+equipment_fabricant_manager,Equipement Fabricant,model_critt_equipment_fabricant,certification.certification_manager,1,1,1,1
+equipment_organisme_manager,Equipement Organisme,model_critt_equipment_organisme,certification.certification_manager,1,1,1,1
+horodating_manager,Horodatage,model_critt_horodating,certification.certification_manager,1,1,1,1
+sale_order_line_equipment_manager,Sale Order Line Equipment,model_critt_sale_order_line_equipment,certification.certification_manager,1,1,1,1
+account_move_manager,Account Move,model_account_move,certification.certification_manager,1,1,1,1
+account_tax_manager,Account Tax,model_account_tax,certification.certification_manager,1,1,1,1
+account_tax_group_manager,Account Tax Group,model_account_tax_group,certification.certification_manager,1,1,1,1
+res_users_manager,Res Users,model_res_users,certification.certification_manager,1,1,1,1
+res_partner_manager,Res Partner,model_res_partner,certification.certification_manager,1,1,1,1
+sale_order_manager,Sale Order,model_sale_order,certification.certification_manager,1,1,1,1
+ir_attachment_manager,Ir Attachment,model_ir_attachment,certification.certification_manager,1,1,1,1
+res_company_manager,Res Company,model_res_company,certification.certification_manager,1,1,1,1
+product_product_manager,Product,model_product_product,certification.certification_manager,1,1,1,1
+
+crm_lead_manager,CRM Lead,model_crm_lead,certification.crm_manager,1,1,1,1
+crm_team_manager,CRM Team,model_crm_team,certification.crm_manager,1,1,1,1
+crm_activity_report_manager,CRM Activity Report,model_crm_activity_report,certification.crm_manager,1,1,1,1
+crm_lead_tag_manager,CRM Lead Tag,model_crm_lead_tag,certification.crm_manager,1,1,1,1
+crm_lead_scoring_frequency_field_manager,CRM Lead Scoring Frequency Field,model_crm_lead_scoring_frequency_field,certification.crm_manager,1,1,1,1
+crm_lead_scoring_frequency_manager,CRM Lead Scoring Frequency,model_crm_lead_scoring_frequency,certification.crm_manager,1,1,1,1
+crm_lost_reason_manager,CRM Lost Reason,model_crm_lost_reason,certification.crm_manager,1,1,1,1
+crm_stage_manager,CRM Stage,model_crm_stage,certification.crm_manager,1,1,1,1

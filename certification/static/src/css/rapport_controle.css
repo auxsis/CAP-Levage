@@ -1,0 +1,88 @@
+body{
+    font-family:  Arial, Helvetica, sans-serif !important;
+}
+
+.equipment{
+    page-break-after:always;
+}
+
+.corps{
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+    padding-bottom: 20px;
+}
+.pied{
+    border-top: 1px solid #000;
+    margin-top: 10px;
+}
+.pied div{
+    text-align: center;
+}
+
+.diagnostic{
+    padding-top: 10px;
+}
+.etat b{
+    float: left;
+}
+.etat span{
+    color: black;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    text-align: center;
+    display: block;
+    width: 150px;
+    float: left;
+    margin-top: -2px;
+    margin-left: 10px;
+    /*text-transform: uppercase;*/
+}
+.etat .ok{
+    background: green;
+}
+.etat .en_cours{
+    background: orange;
+}
+.etat .bloque{
+    background: red;
+}
+.etat .reforme{
+    background: black;
+    color: white;
+}
+
+.reponses span{
+    float: left;
+}
+
+.reponse-icon{
+    background-image: url(../img/radio_button.png);
+    background-repeat: no-repeat;
+    width: 30px;
+    height: 30px;
+    display: block;
+    background-size: 100px auto;
+    background-position: -68px -6px;
+    margin-top: -5px;
+    margin-left: 5px;
+}
+.reponse-icon.oui{
+    background-position: -2px -5px;
+}
+.reponse-icon.non{
+    background-position: -35px -6px;
+}
+
+.equipment_img img{
+    margin-top: -15px;
+    /*max-height: 500px;*/
+    height: 120px;
+}
+
+textarea{
+    width: 100%;
+    border-style: none;
+
+}

@@ -1,0 +1,326 @@
+# -*- coding: utf-8 -*-
+
+import time, datetime
+import logging
+import re
+import uuid
+from odoo import models, fields, api, exceptions, _
+from odoo.addons.http_routing.models.ir_http import slug
+from werkzeug import urls
+from dateutil.relativedelta import relativedelta
+
+_logger = logging.getLogger(__name__)
+
+class Questionnaire(models.Model):
+    _name = "critt.certification.questionnaire"
+    _description = "Questionnaire"
+    _rec_name = "nom"
+    _order = "nom, date_creation, id"
+
+    # Infos Questionnaire
+    nom = fields.Char(string="Nom", required=True)
+
+    categorie = fields.Many2one('maintenance.equipment.category', 'Catégorie')
+
+    ids_regroupement = fields.One2many('critt.certification.regroupement', 'id_questionnaire', string="Regroupements")
+
+    periode = fields.Integer(string="Periodicité audits (en mois)", required=True)
+
+    date_creation = fields.Date(string="Date création",
+                                default = datetime.datetime.today(), readonly = True, copy = False)
+
+    @api.model
+    def regroupement_suivant(self, saisie_utilisateur, id_regroupement):
+        questionnaire = saisie_utilisateur.id_questionnaire
+        regroupements = list(enumerate(questionnaire.ids_regroupement))
+
+        # Premier regroupement
+        if id_regroupement == 0:
+            return (regroupements[0][1], 0, len(regroupements) == 1)
+
+        current_regroupement_index = regroupements.index(next(p for p in regroupements if p[1].id == id_regroupement))
+
+        # All the regroupements have been displayed
+        if current_regroupement_index == len(regroupements) - 1:
+            return (None, -1, False)
+        else:
+            # This will show the last regroupement
+            if current_regroupement_index == len(regroupements) - 2:
+                return (regroupements[current_regroupement_index + 1][1], current_regroupement_index + 1, True)
+            # This will show a regular regroupement
+            else:
+                return (regroupements[current_regroupement_index + 1][1], current_regroupement_index + 1, False)
+
+
+    def copy(self, default=None):
+        default = dict(default or {})
+        Regroupement = self.env['critt.certification.regroupement']
+        Question = self.env['critt.certification.question']
+        newQuestionnaire = super(Questionnaire, self).copy(default)
+
+        for id_regroupement in self.ids_regroupement:
+            regroupement = self.env['critt.certification.regroupement'].search([('id', '=', id_regroupement.id)])
+
+            vals = {'nom': regroupement.nom, 'id_questionnaire': newQuestionnaire.id}
+            newRegroupement = Regroupement.create(vals)
+
+            for id_question in regroupement.ids_question:
+                question = self.env['critt.certification.question'].search([('id', '=', id_question.id)])
+
+                vals = {'question': question.question, 'id_regroupement': newRegroupement.id}
+                Question.create(vals)
+
+        return newQuestionnaire
+
+class Regroupement(models.Model):
+    _name = "critt.certification.regroupement"
+    _description = "Regroupement"
+    _rec_name = "nom"
+    _order = "id"
+
+    nom = fields.Char(string = "Nom du regroupement", required = True)
+
+    id_questionnaire = fields.Many2one('critt.certification.questionnaire', 'Questionnaire', ondelete="cascade")
+
+    ids_question = fields.One2many('critt.certification.question', 'id_regroupement', string = "Questions")
+
+class Question(models.Model):
+    _name = "critt.certification.question"
+    _description = "Question"
+    _rec_name = "question"
+    _order = "id"
+
+    question = fields.Char(string="Question", required=True)
+
+    id_regroupement = fields.Many2one('critt.certification.regroupement', 'Regroupement', ondelete="cascade", required=True)
+    id_questionnaire = fields.Many2one('critt.certification.questionnaire', related='id_regroupement.id_questionnaire',
+                                       string="Questionnaire", ondelete="cascade")
+
+    ids_ligne_saisie_utilisateur = fields.One2many('critt.certification.ligne_saisie_utilisateur', 'id_question',
+                                                   string='Réponses')
+
+    message_erreur = fields.Char(string = "Message d'erreur", default = "Cette question est obligatoire")
+
+
+    def validation_question(self, post, answer_tag):
+        self.ensure_one()
+
+        erreurs = {}
+        # Réponse vide à une question obligatoire
+        if answer_tag not in post:
+            erreurs.update({answer_tag: self.message_erreur})
+        if answer_tag in post and not post[answer_tag].strip():
+            erreurs.update({answer_tag: self.message_erreur})
+        return erreurs
+
+class SaisieUtilisateur(models.Model):
+    _name = "critt.certification.saisie_utilisateur"
+    _description = "Saisie utilisateur questionnaire"
+    _rec_name = "date_creation"
+
+    id_questionnaire = fields.Many2one('critt.certification.questionnaire', string='Questionnaire', required=True,
+                                       readonly=True)
+    date_creation = fields.Datetime('Date creation', default=fields.Datetime.now, required=True,
+                                    readonly=True, copy=False)
+
+    id_client = fields.Many2one('res.partner', string = "Client concerne", required = True)
+
+    id_audit = fields.Many2one('critt.certification.audit', string = "Reponses audit", required = True, ondelete = 'cascade')
+
+    id_dernier_regroupement_affiche = fields.Many2one('critt.certification.regroupement', string="Dernier regroupement affiché")
+    ids_ligne_saisie_utilisateur = fields.One2many('critt.certification.ligne_saisie_utilisateur',
+                                                   'id_saisie_utilisateur',
+                                                   string='Réponses')
+
+    etat = fields.Selection([
+        ('nouveau', 'Pas encore commencé'),
+        ('passe', 'Partiellement complété'),
+        ('termine', 'Complété')], string='Status', default='nouveau', readonly=True)
+
+class LigneSaisieUtilisateur(models.Model):
+    _name = "critt.certification.ligne_saisie_utilisateur"
+    _description = "Ligne saisie utilisateur questionnaire"
+    _rec_name = "date_creation"
+
+    id_saisie_utilisateur = fields.Many2one('critt.certification.saisie_utilisateur', string='Saisie Utilisateur',
+                                            required=True, ondelete = "cascade")
+    id_question = fields.Many2one('critt.certification.question', string='Question', required=True)
+    id_regroupement = fields.Many2one(related='id_question.id_regroupement', string="Regroupement")
+    id_questionnaire = fields.Many2one(related='id_saisie_utilisateur.id_questionnaire', string="Questionnaire",
+                                       store=True)
+    date_creation = fields.Datetime('Date de création', default=fields.Datetime.now, required=True)
+
+    reponse = fields.Integer(string = "Réponse", required = True)
+
+    commentaire = fields.Char(string = "Commentaire")
+
+
+    def write(self, vals):
+        return super(SurveyUserInputLine, self).write(vals)
+
+    @api.model
+    def sauv_ligne(self, id_saisie_utilisateur, question, post, answer_tag):
+        vals = {
+            'id_saisie_utilisateur': id_saisie_utilisateur,
+            'id_question': question.id,
+            'id_questionnaire': question.id_questionnaire.id,
+        }
+        ancienne_lsu = self.search([
+            ('id_saisie_utilisateur', '=', id_saisie_utilisateur),
+            ('id_questionnaire', '=', question.id_questionnaire.id),
+            ('id_question', '=', question.id)
+        ])
+        ancienne_lsu.sudo().unlink()
+
+        commentaire = answer_tag + '_com'
+
+        if post[commentaire]:
+            vals.update({'commentaire': post[commentaire]})
+
+        vals.update({'reponse': post[answer_tag]})
+
+        self.create(vals)
+        return True
+
+class Clients(models.Model):
+    _inherit = "res.partner"
+
+    ids_equipements = fields.One2many("maintenance.equipment", "owner_user_id",
+                                        string = "Equipements possédés", readonly = True)
+
+class Auditeur(models.Model):
+    _name = "critt.certification.auditeur"
+    _description = "Auditeur"
+    _rec_name = "nom"
+    _order = "nom, id"
+
+    nom = fields.Char(string = "Nom", required = True)
+
+    audits_realises = fields.One2many("critt.certification.audit", "auditeur", string = "Audits réalisés", readonly = True)
+
+class Audit(models.Model):
+    _name = "critt.certification.audit"
+    _description = "Audit réalisé"
+    _rec_name = "client"
+    _order = "client, date, id"
+
+    client = fields.Many2one('res.partner', "Client",
+                             required = True,
+                             domain = [('customer', '=', 'true'), ('is_company', '=', False)])
+    equipement = fields.Many2one('maintenance.equipment', "Equipement",
+                                 required = True)
+    categorie = fields.Many2one("maintenance.equipment.category", string = "Catégorie équipement")
+    date = fields.Datetime(string = "Date de l'audit", copy = True, required = True)
+    fin = fields.Datetime(string = "Fin de l'audit", copy = True, required = True)
+    auditeur = fields.Many2one('critt.certification.auditeur', 'Auditeur', required=False)
+    questionnaire = fields.Many2one('critt.certification.questionnaire', string="Questionnaire", required=False)
+    audit_valide = fields.Boolean(string = "Certificat validé", readonly = True, default = False, copy=False,
+                                  help = 'Un audit est valide si toutes les reponses au questionnaire sont "oui"')
+    regroupements_valide = fields.Boolean(string = "Regroupement valide", readonly = True, invisible = True, default = True)
+    etat_audit = fields.Selection([
+        ('demande', 'Demandé'),
+        ('planifie', 'Planifié'),
+        ('debute', 'Débuté'),
+        ('termine', 'Terminé')], string="Etat", default='planifie', readonly=True, copy = True)
+
+    date_suivant = fields.Date(string="Date max conseillée prochain audit", compute = "_calcul_date_suivant")
+    user = fields.Many2one("res.users", string = "Utilisateur")
+
+<<<<<<< HEAD
+=======
+    commande = fields.Many2one("sale.order", string = "Commande")
+
+    acces_certif = fields.Boolean(string = "Accès client certificat", default = False)
+
+>>>>>>> Lucas
+    url_debuter = fields.Char("Lien dubuter audit", compute="_compute_url_questionnaire", copy = False)
+    url_reponses = fields.Char("Lien réponses questionnaire", compute="_compute_url_questionnaire", copy = False)
+
+    @api.depends('equipement', 'date')
+    def _calcul_date_suivant(self):
+        for record in self:
+            if record.date and record.equipement:
+                date = datetime.datetime.strptime(record.date, '%Y-%m-%d %H:%M:%S').date() + relativedelta(months=+int(record.equipement.periode))
+
+                record.date_suivant = date
+            else:
+                record.date_suivant = ""
+
+<<<<<<< HEAD
+=======
+
+    def get_sale_order(self):
+        if self.audit_valide == True:
+            service = self.env['product.product'].search([('categ_id', '=', self.equipement.category_id.category_article_id.id), ('type', '=', 'service')], limit=1)
+            commande = self.env['sale.order'].search([('product_id', '=', service.id)], limit=1)
+            self.update({'commande': commande.id, 'acces_certif': True})
+>>>>>>> Lucas
+
+
+    def _compute_url_questionnaire(self):
+        base_url = '/' if self.env.context.get('relative_url') else \
+            self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        for audit in self:
+            audit.url_debuter = urls.url_join(base_url, "audit/debuter/%s" % (slug(audit)))
+            audit.url_reponses = urls.url_join(base_url, "audit/reponses_questionnaire/%s" % (slug(audit)))
+
+
+    def action_lancer_diagnostic(self):
+        self.ensure_one()
+
+        client = str(self.client.id)
+        queue = "/%s" % client
+        return {
+            'type': 'ir.actions.act_url',
+            'name': "Démarrer questionnaire",
+            'target': 'self',
+            'url': self.with_context(relative_url=True).url_debuter + queue
+        }
+
+
+    def action_reponses_questionnaire(self):
+        self.ensure_one()
+
+        client = str(self.client.id)
+        queue = "/%s/0" % client
+        return {
+            'type': 'ir.actions.act_url',
+            'name': "Réponses questionnaire",
+            'target': 'self',
+            'url': self.with_context(relative_url=True).url_reponses + queue
+        }
+
+    @api.onchange('client')
+    def _onchange_client(self):
+        self.equipement = ""
+        self.categorie = ""
+        self.questionnaire = ""
+        self.user = self.env['res.users'].search([('partner_id', '=', self.client.id)])
+
+    @api.onchange('equipement')
+    def _onchange_equipement(self):
+        if self.equipement == "":
+            self.categorie = ""
+            self.questionnaire = ""
+
+        else:
+            self.categorie = self.equipement.category_id
+            self.questionnaire = ""
+
+
+    def copy(self, default=None):
+        default = dict(default or {})
+        SaisieUtilisateur = self.env['critt.certification.saisie_utilisateur']
+        LigneSaisieUtilisateur = self.env['critt.certification.ligne_saisie_utilisateur']
+        newAudit = super(Audit, self).copy(default)
+
+        reponses = self.env['critt.certification.saisie_utilisateur'].search([('id_audit', '=', self.id), ('id_client', '=', self.client.id)])
+        vals = {'id_questionnaire': reponses.id_questionnaire.id, 'id_client': reponses.id_client.id,
+                'id_audit': newAudit.id, 'etat': 'termine'}
+        newSaisieUtilisateur = SaisieUtilisateur.create(vals)
+        for reponse in reponses.ids_ligne_saisie_utilisateur:
+            vals = {'id_saisie_utilisateur': newSaisieUtilisateur.id, 'id_question': reponse.id_question.id,
+                    'reponse': reponse.reponse, 'commentaire': reponse.commentaire}
+            LigneSaisieUtilisateur.create(vals)
+
+        return newAudit
