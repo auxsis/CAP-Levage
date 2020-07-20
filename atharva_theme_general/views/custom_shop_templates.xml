@@ -11,7 +11,7 @@
     </template>
     <template id="product_attribute" name="Product Attribute's Filters" inherit_id="website_sale.products_attributes">
         <xpath expr="//form[hasclass('js_attributes')]" position="inside">
-            <input type="hidden" name="ppg" t-att-value="ppg if ppg else quantities_per_page[0].name if quantities_per_page else '18'" />
+            <input type="hidden" name="ppg" t-att-value="quantities_per_page[0].name if quantities_per_page else '18'" />
         </xpath>
     </template>
     <template id="add_cover_quickview" inherit_id="website.layout" active="True">

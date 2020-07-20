@@ -275,7 +275,7 @@
         </form>
     </template>
 
-    <template id="modify_shop" inherit_id="website_sale.products" name="Products" priority="15">
+    <template id="modify_shop" inherit_id="website_sale.products" name="Products">
         <xpath expr="//div[hasclass('products_pager')]" position="replace" />
         <xpath expr="//div[hasclass('oe_website_sale')]" position="attributes">
             <attribute name="class">container oe_website_sale o_shop_width</attribute>
@@ -342,7 +342,7 @@
                                 </div>
                                 <div class="aspl-left">
                                     <input type="hidden" name="curr_category" t-att-value="category.id if category else ''" />
-                                    <input type="hidden" name="loaded_products_count" t-att-value="ppg if ppg else quantities_per_page[0].name if quantities_per_page else '18'" />
+                                    <input type="hidden" name="loaded_products_count" t-att-value="quantities_per_page[0].name if quantities_per_page else '18'" />
                                     <input type="hidden" name="product_collection" t-att-value="product_collection if product_collection else '-1'" />
                                     <button id="load_more_products" class="btn_load_more_products">LOAD MORE</button>
                                 </div>
