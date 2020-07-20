@@ -1,0 +1,102 @@
+
+#nfcModal{
+	background-color: rgb(255, 255, 255);
+	display: block;
+	width: 400px;
+	height: 300px;
+	top: 10%;
+	left: 38%;
+}
+#nfcModal .modal-body{
+	height: 185px;
+}
+
+.nfc_button_bo{
+	float: right;
+	margin-left: 5px;
+}
+/*.nfc_button_bo span:first-child{
+	background-image: url(../img/nfc/nfc.png);
+	background-size: 95% auto;
+	background-repeat: no-repeat;
+	width: 50px;
+	height: 20px;
+	display: block;
+	float: left;
+}
+.nfc_button_bo span:last-child{
+	background-image: url(../img/nfc/nfc_3.png);
+	background-size: 70% auto;
+	background-repeat: no-repeat;
+	width: 16px;
+	height: 20px;
+	display: block;
+	float: left;
+}*/
+
+
+
+.nfc_column{
+	float: left;
+}
+.nfc_column > span, .nfc_column > input{
+	margin-top: 24px;
+}
+.nfc{
+	background-image: url(../img/nfc/nfc.png);
+	background-size: 100px auto;
+	width: 150px;
+	height: 75px;
+	cursor: pointer;
+	background-position: 10px;
+	background-repeat: no-repeat;
+}
+.nfc div{
+	background-image: url(../img/nfc/nfc_3.png);
+	background-size: 100% auto;
+	background-repeat: no-repeat;
+	display: block;
+	width: 26px;
+	height: 50px;
+	cursor: pointer;
+	float: right;
+	margin-top: 10px;
+	margin-right: 8px;
+}
+.nfc.scan div{
+	-webkit-transition: nfcScan 1.5s infinite linear;
+	-moz-transition: nfcScan 1.5s infinite linear;
+	-ms-transition: nfcScan 1.5s infinite linear;
+	-o-transition: nfcScan 1.5s infinite linear;
+	animation: nfcScan 1.5s infinite linear;
+}
+
+
+@keyframes nfcScan {
+ 0% {
+	background-image: url(../img/nfc/nfc_3.png);
+ }
+ 40% {
+	 background-image: url(../img/nfc/nfc_0.png);
+ }
+ 50% {
+	 background-image: url(../img/nfc/nfc_1.png);
+ }
+ 75% {
+	 background-image: url(../img/nfc/nfc_2.png);
+ }
+}
+@-webkit-keyframes nfcScan {
+ 0% {
+	background-image: url(../img/nfc/nfc_3.png);
+ }
+ 25% {
+	 background-image: url(../img/nfc/nfc_0.png);
+ }
+ 50% {
+	 background-image: url(../img/nfc/nfc_1.png);
+ }
+ 75% {
+	 background-image: url(../img/nfc/nfc_2.png);
+ }
+}

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+<!--        <record id="email_template_edi_sale_inherit" model="mail.template">
+            <field name="name">Devis envoyé par mail</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="subject">${object.company_id.name} Devis (Ref ${object.name or 'n/a' })</field>
+            <field name="email_from">${(object.user_id.email_formatted or user.email_formatted) | safe}</field>
+            <field name="partner_to">${object.partner_id.id}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        % set doc_name = 'quotation' if object.state in ('draft', 'sent') else 'order'
+                        Bonjour,
+                        <br/><br/>
+                        Votre devis <strong>${object.name}</strong> d'un montant de <strong>${format_amount(object.amount_total, object.pricelist_id.currency_id)}</strong> est prêt pour révision.
+                        <br/><br/>
+                        N'hésitez pas à nous contacter si vous avez des questions.
+                        <br/><br/>
+                        <center>
+                            <a href="/my/orders/${object.id}"
+                            style="background-color: #e6332a; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;">
+                            Accepter et Signer
+                        </a>
+                        </center>
+                    </p>
+                </div>
+            </field>
+            &lt;!&ndash;<field name="report_template" ref="sale.action_report_saleorder"/>&ndash;&gt;
+            <field name="report_name">${(object.name or '').replace('/','_')}</field>
+            <field name="lang">${object.partner_id.lang}</field>
+           &lt;!&ndash; <field name="user_signature" eval="False"/>&ndash;&gt;
+            <field name="auto_delete" eval="True"/>
+        </record>-->
+
+
+    </data>
+</odoo>
