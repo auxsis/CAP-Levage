@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <!--<t t-extend="ListView.buttons" t-name="EquipmentListView.buttons">
+        <t t-jquery="button.o_list_button_add" t-operation="after">
+            <t t-js="ctx">
+                if (window.odoo._modules.indexOf("base_import") >= 0) {
+                r.push(context.engine.tools.call(context, 'ImportView.import_button', dict));
+                };
+            </t>
+            <button type="button" class="btn btn-secondary o_button_generate_test_url">
+                NFC
+            </button>
+        </t>
+    </t>-->
+    <!--<t t-name="TestButtonNfc.test_button_nfc">
+        <button t-if='widget.model' type="button" class="btn btn-secondary o_button_generate_test_url">
+            NFC <t t-esc="widget.model"/>
+        </button>
+    </t>
+    <t t-extend="ListView.buttons">
+        <t t-jquery="button.o_list_button_add" t-operation="after">
+           <t t-call="TestButtonNfc.test_button_nfc"/>
+        </t>
+    </t>-->
+</templates>

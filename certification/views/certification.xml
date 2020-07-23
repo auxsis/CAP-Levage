@@ -1,0 +1,578 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+	<data>
+        <!--
+
+        &lt;!&ndash; Définition de la vue form des auditeurs &ndash;&gt;
+        <record id="vue_auditeur_form" model="ir.ui.view">
+            <field name="name">critt.certification.auditeur.form</field>
+            <field name="model">critt.certification.auditeur</field>
+            <field name="arch" type="xml">
+                <form string="Gestion des auditeurs">
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="nom" class="oe_edit_only"/>
+                            <h1><field name="nom" placeholder="Nom de l'auditeur"/></h1>
+                            <separator />
+                        </div>
+                        <notebook>
+                            <page string="Audits">
+                                <field name="audits_realises">
+                                    <tree string="Audit">
+                                        <field name="client"/>
+                                        <field name="equipement"/>
+                                        <field name="date"/>
+                                        <field name="etat_audit"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        &lt;!&ndash; Définition de la vue liste des auditeurs &ndash;&gt;
+        <record id="vue_auditeur_tree" model="ir.ui.view">
+            <field name="name">critt.certification.auditeur.tree</field>
+            <field name="model">critt.certification.auditeur</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="nom"/>
+                    <field name="audits_realises"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="act_auditeur_view" model="ir.actions.act_window">
+            <field name="name">Gestion des auditeurs</field>
+            <field name="res_model">critt.certification.auditeur</field>
+&lt;!&ndash;            <field name="view_type">form</field>&ndash;&gt;
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="vue_auditeur_tree"/>
+        </record>
+
+        &lt;!&ndash; Définition de la vue calendar des audits &ndash;&gt;
+        <record id="vue_audit_calendar" model="ir.ui.view">
+            <field name="name">critt.certification.audit.calendar</field>
+            <field name="model">critt.certification.audit</field>
+            <field name="arch" type="xml">
+                <calendar string="Calendrier audits" date_start="date" date_stop="fin" color="client">
+                    <field name="client"/>
+                    <field name="equipement"/>
+                </calendar>
+            </field>
+        </record>
+
+        -->
+
+        <!-- Définition de la vue form basique des questionnaires -->
+        <record model="ir.ui.view" id="test_certification_tree_view">
+            <field name="name">Création d'un questionnaire</field>
+            <field name="model">critt.certification.questionnaire</field>
+            <field name="arch" type="xml">
+                <form string="Gestion questionnaire">
+                    <field name="id" invisible="1"/>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="nom" class="oe_edit_only"/>
+                            <h1><field name="nom" placeholder="Nom du questionnaire"/></h1>
+                            <separator />
+                        </div>
+                        <group>
+                            <field name="categorie"></field>
+                            <field name="date_creation"/>
+                        </group>
+                        <notebook>
+                            <page string="Regroupements">
+                                <field name="ids_regroupement">
+                                    <tree string="Regroupement">
+                                        <field name="nom"/>
+                                        <field name="ids_question"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Définition de la vue liste basique des questionnaires -->
+        <record id="vue_questionnaire_tree" model="ir.ui.view">
+            <field name="name">Gestion des questionnaires</field>
+            <field name="model">critt.certification.questionnaire</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="nom"/>
+                    <field name="categorie"/>
+                    <field name="ids_regroupement"/>
+                    <field name="date_creation"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Définition de la vue form des regroupements -->
+        <record id="vue_regroupement_form" model="ir.ui.view">
+            <field name="name">Création regroupement</field>
+            <field name="model">critt.certification.regroupement</field>
+            <field name="arch" type="xml">
+                <form string="Gestion des regroupements">
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="nom" class="oe_edit_only"/>
+                            <h1><field name="nom" placeholder="Nom du regroupement"/></h1>
+                            <separator />
+                        </div>
+                        <notebook>
+                            <page string="Questions">
+                                <field name="ids_question">
+                                    <tree string="Question" editable="bottom">
+                                        <field name="question"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Définition de la vue form des questions -->
+        <!--<record id="vue_question_form" model="ir.ui.view">
+            <field name="name">Création question</field>
+            <field name="model">critt.certification.question</field>
+            <field name="arch" type="xml">
+                <form string="Gestion des questions">
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="question" class="oe_edit_only"/>
+                            <h1><field name="question" placeholder="Question"/></h1>
+                            <separator />
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>-->
+
+        <!-- Définition de la vue liste basique d'un audit -->
+        <!--<record id="vue_audit_tree" model="ir.ui.view">
+            <field name="name">critt.certification.audit.tree</field>
+            <field name="model">critt.certification.audit</field>
+            <field name="arch" type="xml">
+                <tree create="false" edit="false" >
+                    <field name="client"/>
+                    <field name="equipement"/>
+                    <field name="date"/>
+                    <field name="etat_audit"/>
+                    <button name="action_lancer_controle" string="Lancer le contrôle" attrs="{'invisible':[('etat_audit', '!=', 'planifie')]}"
+                                type="object"/>
+                    <button name="action_reponses_questionnaire" string="Voir le questionnaire" attrs="{'invisible':[('etat_audit', '!=', 'termine')]}"
+                                type="object"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="search_audit" model="ir.ui.view">
+            <field name="name">Recherche audit</field>
+            <field name="model">critt.certification.audit</field>
+            <field name="arch" type="xml">
+                <search string="Search audit">
+                    <field name="equipement" string="Numéro matériel"/>
+                    <field name="client" string="Client"/>
+                    <field name="date" string="Date planifiée"/>
+                    <field name="etat_audit" string="Contrôles planifiés" filter_domain="[('etat_audit', '=', 'planifie')]"/>
+                    <separator/>
+                    <filter string="Contrôles planifiés" name="filtre_etat_audit" domain="[('etat_audit', '=', 'planifie')]"/>
+                    <separator/>
+                </search>
+            </field>
+        </record>
+
+         <record id="act_audit_view" model="ir.actions.act_window">
+            <field name="name">Gestion des audits</field>
+            <field name="res_model">critt.certification.audit</field>
+            <field name="view_mode">tree</field>
+            <field name="context">{"search_default_filtre_etat_audit":1}</field>
+        </record>-->
+
+        <!-- Définition de la vue form des clients -->
+        <record id="vue_client_form" model="ir.ui.view">
+            <field name="name">Création partenaire</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <!--<xpath expr="//sheet[1]" position="before">
+                    <header>
+                        <button name="action_agence" string="Agence" type="object"/>
+                        <button name="action_equipe" string="Équipe" type="object"/>
+                    </header>
+                </xpath>-->
+                <xpath expr="//field[@name='vat']" position="before">
+                    <field name="first_name"/>
+                    <field name="last_name"/>
+                    <!-- <field name="company_name"/> -->
+                </xpath>
+                <xpath expr="//field[@name='vat']" position="after">
+                    <field name="is_customer"/>
+                    <field name="num_commande_client_required"/>
+					<field name="parent_id" string="Est référent de"/>
+                </xpath>
+                <xpath expr="//field[@name='category_id']" position="after">
+                    <!-- <field name="portal_authorized"/> -->
+                    <field name="dao"/>
+                    <field name="gest_materiel"/>
+                    <field name="date_fin_essai" widget="date"/>
+                    <field name="signature" widget="signature" width="210px" height="90px"/>
+                    <field name="context_parent_id" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='website']" position="before">
+                    <field name="equipe_id" options='{"no_create": True}'/>
+                    <field name="agence_id" options='{"no_create": True}'/>
+                </xpath>
+                <xpath expr="//page[1]" position="attributes">
+                    <attribute name="string">Référents</attribute>
+                </xpath>
+                <xpath expr="//page[@name='sales_purchases']" position="after">
+                    <page string="Liste matériels" name="equipements">
+                        <field name="ids_equipements">
+                            <tree string="Liste matériels">
+                                <field name="num_materiel"/>
+                                <field name="category_id"/>
+                                <field name="cmu"/>
+                                <field string="Dernier certificat" name="last_certificat" widget="url" class="link_pdf"/>
+                                <field name="audit_suivant"/>
+                                <field name="statut"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Contrôles réalisés" attrs="{'invisible': [('is_customer', '=', True)]}">
+                        <field name="audits_realises">
+                            <tree string="Audit">
+                                <field name="client"/>
+                                <field name="equipement"/>
+                                <field name="date"/>
+                                <field name="etat_audit"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Rapports de contrôle" name="rapport_controle">
+                        <field name="ids_rapport_controle">
+                            <tree string="Rapports de contrôle" default_order="id desc">
+                                <field string="Date du rapport" name="create_date" widget="date"/>
+                                <field name="url" widget="url" class="link_pdf"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <!--<page string="Coûts Audits" name="couts_audit">
+                        <field name="lignes_couts_audit">
+                            <tree string="Coûts Audit" editable="bottom">
+                                <field name="categorie_equipement"/>
+                                <field name="cout"/>
+                            </tree>
+                        </field>
+                    </page>-->
+                    <page string="Catégories autorisées">
+                        <field name="equipment_create_right_ids">
+                            <tree string="Catégories autorisés" editable="bottom">
+                                <field name="category_id"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Définition de la vue form des agence réfentes -->
+        <!--<record id="vue_referent_agence_form" model="ir.ui.view">
+            <field name="name">Création agence référente</field>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                <form string="Création agence référente">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <label for="street" string="Addresse"/>
+                                <div class="o_address_format">
+                                    <field name="street" placeholder="Rue..." class="o_address_street"/>
+                                    <field name="street2" placeholder="Rue 2..." class="o_address_street"/>
+                                    <field name="city" placeholder="Ville" class="o_address_city"/>
+                                    <field name="state_id" class="o_address_state" placeholder="État" options='{"no_open": True}'/>
+                                    <field name="zip" placeholder="Code postal" class="o_address_zip"/>
+                                    <field name="country_id" placeholder="Pays" class="o_address_country" options='{"no_open": True, "no_create": True}'/>
+                                </div>
+                                <field name="comment" placeholder="Notes internes..."/>
+                            </group>
+                            <group>
+                                <field name="phone" widget="phone"/>
+                                <field name="mobile" widget="phone"/>
+                                <field name="email" widget="email" context="{'gravatar_image': True}"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>-->
+
+        <!-- Définition de la vue form des équipes réfentes -->
+        <!--<record id="vue_referent_equipe_form" model="ir.ui.view">
+            <field name="name">Création équipe référente</field>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                <form string="Création équipe référente">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="title" options='{"no_open": True}' placeholder="Ex.: M."/>
+                                <field name="function" placeholder="ex: Directeur Commercial"/>
+                                <field name="agence_adresse_referent" options='{"no_open": True}'/>
+                                <field name="comment" placeholder="Notes internes..."/>
+                            </group>
+                            <group>
+                                <field name="phone" widget="phone"/>
+                                <field name="mobile" widget="phone"/>
+                                <field name="email" widget="email" context="{'gravatar_image': True}"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>-->
+
+        <!-- Définition de la vue form de la table certificats (onglet vue équipements) -->
+        <record id="vue_form_sequence" model="ir.ui.view">
+            <field name="name">critt.certification.certificat.form</field>
+            <field name="model">critt.certification.certificat</field>
+            <field name="arch" type="xml">
+                <form string="Gestion des certificats">
+                    <sheet>
+                        <group>
+                            <field name="type"/>
+                            <field name="date" placeholder="MM/AAAA"/>
+                            <field name="id_equipment" readonly="1" force_save="1"/>
+                            <field name="desc" readonly="1" force_save="1"/>
+                            <field name="fic_pdf" widget="pdf_viewer"/>
+                            <field name="sequence" invisible="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Définition de la vue search des clients -->
+        <record id="view_client_filter" model="ir.ui.view">
+            <field name="name">Recherche client</field>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                <search string="Search devis">
+                    <field name="is_customer" string="Est un client" filter_domain="[('is_customer', '=', True)]"/>
+                    <separator/>
+                    <field name="name" string="Nom"/>
+                    <separator/>
+                    <field name="parent_id" string="Société liée"/>
+                    <separator/>
+                    <field name="email" string="Courriel"/>
+                    <separator/>
+                    <field name="phone" string="Téléphone"/>
+                    <separator/>
+                    <field name="category_id" string="Etiquette"/>
+                    <separator/>
+                    <field name="user_id" string="Vendeur"/>
+                    <separator/>
+                    <filter string="Est un client" name="is_customer_filter" domain="[('is_customer', '=', True)]"/>
+                    <separator/>
+                </search>
+            </field>
+        </record>
+
+        <!-- Définition de la vue kanban partner -->
+        <record id="act_client_view" model="ir.actions.act_window">
+            <field name="name">Contacts</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="search_view_id" ref="certification.view_client_filter"/>
+            <field name="context">{"search_default_is_customer_filter":1}</field>
+        </record>
+
+        <!-- Action appel vue kanban partner -->
+        <record id="vue_client_kanban" model="ir.actions.act_window.view">
+            <field name="view_mode">kanban</field>
+            <field name="view_id" ref="base.res_partner_kanban_view"/>
+            <field name="act_window_id" ref="act_client_view"/>
+        </record>
+
+        <!-- Action appel vues questionnaire -->
+        <record model="ir.actions.act_window" id="act_certification_tree_view">
+            <field name="name">Questionnaires</field>
+            <field name="res_model">critt.certification.questionnaire</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Action appel page accueil -->
+        <!--<record id="act_backoffice_home" model="ir.actions.act_url">
+            <field name="name">backoffice_home</field>
+            <field name="target">self</field>
+            &lt;!&ndash;<field name="url">/web#action=certification.act_equipement_view</field>&ndash;&gt;
+            &lt;!&ndash;<field name="url">/my/identification?origin=bo</field>&ndash;&gt;
+            <field name="url">/web#action=certification.vue_equipement_tree</field>
+        </record>-->
+        <record id="act_backoffice_home" model="ir.actions.act_window">
+            <field name="name">Accueil</field>
+            <field name="res_model">critt.equipment</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{"search_default_type_date":1}</field>
+        </record>
+
+        <!-- Action appel planing -->
+        <record id="act_planning" model="ir.actions.act_url">
+            <field name="name">action_planning</field>
+            <field name="target">self</field>
+            <field name="url">/my/planning?origin=bo</field>
+        </record>
+
+        <!--  Vue liste materiels a planifier -->
+        <record id="vue_mat_a_plan_tree" model="ir.ui.view">
+            <field name="name">critt.equipment.tree_planifier</field>
+            <field name="model">critt.equipment</field>
+            <field name="arch" type="xml">
+                <tree create="false" edit="false">
+                    <field name="num_materiel"/>
+                    <field name="res_partner_id"/>
+                    <field name="audit_suivant"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Action appel vue liste materiels a planifier -->
+        <record model="ir.actions.act_window" id="act_vue_mat_a_plan">
+            <field name="name">Matériels à diagnostiquer sous 30 jours</field>
+            <field name="res_model">critt.equipment</field>
+            <field name="view_mode">tree</field>
+            <field name="domain">
+                [('audit_suivant', '&gt;', current_date),('audit_suivant', '&lt;=', (context_today() + datetime.timedelta(30)).strftime('%Y-%m-%d')),('of_cap_levage', '=', True),('statut', 'in', ['ok', 'en_cours'])]
+            </field>
+            <field name="view_id" ref="vue_mat_a_plan_tree"/>
+        </record>
+
+        <!--  Vue liste devis acceptés -->
+        <record id="vue_devis_acceptes_tree" model="ir.ui.view">
+            <field name="name">sale.order.tree_acceptes</field>
+            <field name="model">sale.order</field>
+            <field name="arch" type="xml">
+                <tree create="false" edit="false">
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="date_order" widget="date"/>
+                    <field name="state" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Action appel vue liste materiels a planifier -->
+        <record model="ir.actions.act_window" id="act_vue_devis_acceptes">
+            <field name="name">Devis acceptés par les clients</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_mode">tree</field>
+            <field name="domain">
+                [('state', '=', 'sale'),('invoice_status', '=', 'to invoice')]
+            </field>
+            <field name="view_id" ref="vue_devis_acceptes_tree"/>
+        </record>
+
+        <!-- Main -->
+        <menuitem
+                id="menu_main"
+                name="Certification"
+                web_icon="certification,static/description/icon.png"
+                sequence="1"/>
+
+        <!-- Home -->
+        <menuitem
+                id="menu_backoffice_home"
+                parent="menu_main"
+                name="Accueil"
+                action="act_backoffice_home"
+                sequence="1"/>
+
+        <!-- Configuration -->
+        <menuitem
+                id="menu_configuration"
+                name="Configuration"
+                parent="menu_main"
+                sequence="3"/>
+
+        <!-- Configuration - Client -->
+        <menuitem
+                id="menu_configuration_client"
+                parent="menu_configuration"
+                name="Clients"
+                action="act_client_view"
+                sequence="4"/>
+
+        <!-- Configuration - Questionnaire -->
+        <menuitem
+                id="menu_configuration_questionnaire"
+                name="Modèles questionnaire"
+                parent="menu_configuration"
+                action="act_certification_tree_view"
+                sequence="5"/>
+
+        <!-- Configuration - Dashboard -->
+        <menuitem
+                id="menu_configuration_dashboard"
+                parent="menu_configuration"
+                name="Vues tableau de bord"
+                sequence="6"/>
+
+        <!-- Configuration - Dashboard - Materiels a planifier -->
+        <menuitem
+                id="menu_configuration_dashboard_mat_a_plan"
+                parent="menu_configuration_dashboard"
+                name="Matériels à planifier"
+                action="act_vue_mat_a_plan"
+                sequence="1"/>
+
+        <!-- Configuration - Dashboard - Prochains contrôles -->
+        <menuitem
+                id="menu_configuration_dashboard_pro_controles"
+                parent="menu_configuration_dashboard"
+                name="Prochains contrôles"
+                sequence="2"/>
+
+        <!-- Configuration - Dashboard - Devis acceptes -->
+        <menuitem
+                id="menu_configuration_dashboard_devis_acceptes"
+                parent="menu_configuration_dashboard"
+                name="Devis acceptés"
+                action="act_vue_devis_acceptes"
+                sequence="3"/>
+
+        <!-- Planification -->
+        <!--<menuitem
+                id="menu_planning"
+                parent="menu_main"
+                name="Planification"
+                sequence="4"/>-->
+
+        <!-- Planification - Planifier contrôles -->
+        <!--<menuitem
+                id="menu_planning_home"
+                parent="menu_planning"
+                name="Planifier contrôles"
+                action="act_planning"
+                sequence="1"/>-->
+
+        <!-- Planification - Contrôles planifiés -->
+       <!-- <menuitem
+                id="menu_planning_planifies"
+                parent="menu_planning"
+                name="Contrôles planifiés"
+                action="act_audit_view"
+                sequence="2"/>-->
+
+    </data>
+</odoo>

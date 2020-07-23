@@ -1,0 +1,124 @@
+body{
+    font-family: 'Roboto';
+}
+
+.infos_mat tr td{
+    width: 50%;
+    border: 1px solid;
+    padding: 5px;
+    font-size: 14px;
+}
+
+table{
+    width: 100%;
+}
+
+.equipment{
+    page-break-after:always;
+}
+
+.certificat{
+    page-break-after:always;
+}
+
+/*.corps{
+    border-top: 1px solid #000;
+}*/
+
+.infos_materiel{
+    /*border-bottom: 1px solid #000;*/
+    padding-bottom: 20px;
+}
+
+.footer{
+    font-weight: normal !important;
+}
+
+.pied{
+    border-top: 1px solid #000;
+    margin-top: 10px;
+}
+.pied div{
+    text-align: center;
+}
+
+.diagnostic{
+    /*border-bottom: 1px solid #000;*/
+    padding-top: 10px;
+}
+.etat b{
+    float: left;
+}
+.etat span{
+    color: black;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    text-align: center;
+    display: block;
+    width: 150px;
+    float: left;
+    margin-top: -2px;
+    margin-left: 10px;
+    /*text-transform: uppercase;*/
+}
+.etat .ok{
+    background: #15CA16;;
+}
+.etat .en_cours{
+    background: #FF8e60;;
+}
+.etat .bloque{
+    background: #e6332a;;
+}
+.etat .reforme{
+    background: #000000;;
+    color: white;
+}
+
+.reponses{
+    margin-top: 2px;
+}
+
+.reponses span{
+    float: left;
+}
+
+.reponse-icon{
+    background-image: url(../img/radio_button.png);
+    background-repeat: no-repeat;
+    width: 30px;
+    height: 30px;
+    display: block;
+    background-size: 100px auto;
+    background-position: -68px -6px;
+    margin-top: -3px;
+    margin-left: 5px;
+}
+.reponse-icon.oui{
+    background-position: -2px -5px;
+}
+.reponse-icon.non{
+    background-position: -35px -6px;
+}
+
+.equipment_img img{
+    margin-top: -15px;
+    width: 200px;
+    height: auto;
+}
+
+.observation .commentaire{
+    min-height: 30px;
+    display: block;
+}
+textarea{
+    width: 100%;
+    border-style: none;
+
+}
+
+.icone span {
+    float: left;
+}
